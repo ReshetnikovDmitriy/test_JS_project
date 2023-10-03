@@ -73,3 +73,4 @@ window.addEventListener('DOMContentLoaded', () => {
 	}
 	setClock('.timer',timeEnd);
 });
+
