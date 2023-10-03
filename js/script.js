@@ -72,5 +72,80 @@ window.addEventListener('DOMContentLoaded', () => {
 		}
 	}
 	setClock('.timer',timeEnd);
+
+	//modal
+
+	let modalTriger = document.querySelectorAll('[data-modal]'),
+		modal = document.querySelector('.modal'),
+		modalClose = document.querySelector('[data-close]');
+
+		modalTriger.forEach(btn => {
+			btn.addEventListener('click', () => {
+				modal.classList.add('show');
+				modal.classList.remove('hide');
+				document.body.style.overflow = 'hidden';
+			});
+		});
+		modalClose.addEventListener('click', () => {
+			modal.classList.add('hide');
+			modal.classList.remove('show');
+			document.body.style.overflow = '';
+		});
+		modal.addEventListener ('click', (e) => {
+			if(e.target === modal) {
+				modal.classList.add('hide');
+				modal.classList.remove('show');
+				document.body.style.overflow = '';
+			}
+		});
+		document.addEventListener ('keydown', (e) => {
+			if (e.code === 'Escape') {
+				modal.classList.add('hide');
+				modal.classList.remove('show');
+				document.body.style.overflow = '';
+			}
+		});
+
+		//slides
+
+		let slides = document.querySelectorAll('.offer__slide'),
+			prev = document.querySelector('.offer__slider-prev'),
+			next = document.querySelector('.offer__slider-next'),
+			total = document.querySelector('#total'),
+			current = document.querySelector('#current');
+
+			let slideIndex = 1;
+
+			showSlides(slideIndex);
+
+			if (slides.length < 10) {
+				total.textContent = `0${slides.length}`;
+			}else{
+				total.textContent = slides.length;
+			}
+
+			function showSlides (n) {
+				if (n > slides.length) {
+					slideIndex = 1;
+				}
+				if (n < 1) {
+					slideIndex = slides.length;
+				}
+				slides.forEach(item => item.style.display = 'none');
+				slides[slideIndex - 1].style.display = 'block';
+				if(slides.length < 10) {
+					current.textContent = `0${slideIndex}`;
+				}
+			}
+			function plusSlides(n) {
+				showSlides(slideIndex += n);
+			}
+			prev.addEventListener('click', () => {
+				plusSlides(-1);
+			});
+			next.addEventListener('click', () => {
+				plusSlides(1);
+			});
+
 });
 
