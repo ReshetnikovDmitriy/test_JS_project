@@ -37,41 +37,53 @@ window.addEventListener('DOMContentLoaded', () => {
 
 	//timer
 
-	let timeEnd = '2023-12-31';
-	function getTimeRemaining(endtime) {
-		let t = Date.parse(endtime) - Date.parse(new Date()),
-			days = Math.floor(t / (1000 * 60 * 60 * 24)),
-			hours = Math.floor(t / (1000 * 60 * 60) % 24),
-			minutes = Math.floor((t / 1000 / 60) % 60),
-			seconds = Math.floor((t / 1000) % 60);
-		return {
-			'total' : t,
-			'days' : days,
-			'hours' : hours,
-			'minutes' : minutes,
-			'seconds' : seconds,
-		};
-	}
-	function setClock(selector, endtime) {
-		let timer = document.querySelector(selector),
-			days = document.querySelector('#days'),
-			hours = document.querySelector('#hours'),
-			minutes = document.querySelector('#minutes'),
-			seconds = document.querySelector('#seconds'),
-			timeInterval = setInterval(updateClock, 1000);
+	function timer(id, timeEnd) {
+		// let timeEnd = '2024-12-31';
+		function getTimeRemaining(endtime) {
+			let days, hours, minutes, seconds;
+			let t = Date.parse(endtime) - Date.parse(new Date());
+			if (t <= 0) {
+				days = 0;
+				hours = 0;
+				minutes = 0;
+				seconds = 0;
+			}else {
+				days = Math.floor(t / (1000 * 60 * 60 * 24)),
+				hours = Math.floor(t / (1000 * 60 * 60) % 24),
+				minutes = Math.floor((t / 1000 / 60) % 60),
+				seconds = Math.floor((t / 1000) % 60);
+			}
+				
+			return {
+				'total' : t,
+				'days' : days,
+				'hours' : hours,
+				'minutes' : minutes,
+				'seconds' : seconds,
+			};
+		}
+		function setClock(selector, endtime) {
+			let timer = document.querySelector(selector),
+				days = document.querySelector('#days'),
+				hours = document.querySelector('#hours'),
+				minutes = document.querySelector('#minutes'),
+				seconds = document.querySelector('#seconds'),
+				timeInterval = setInterval(updateClock, 1000);
 
-		function updateClock() {
-			let t = getTimeRemaining(endtime);
-			days.innerHTML = t.days;
-			hours.innerHTML = t.hours;
-			minutes.innerHTML = t.minutes;
-			seconds.innerHTML = t.seconds;
-			if(t.total <= 0) {
-				clearInterval(timeInterval);
+			function updateClock() {
+				let t = getTimeRemaining(endtime);
+				days.innerHTML = t.days;
+				hours.innerHTML = t.hours;
+				minutes.innerHTML = t.minutes;
+				seconds.innerHTML = t.seconds;
+				if(t.total <= 0) {
+					clearInterval(timeInterval);
+				}
 			}
 		}
+		setClock('.timer',timeEnd);
 	}
-	setClock('.timer',timeEnd);
+	timer('.timer', '2024-01-31');
 
 	//modal
 
@@ -87,24 +99,33 @@ window.addEventListener('DOMContentLoaded', () => {
 			});
 		});
 		modalClose.addEventListener('click', () => {
-			modal.classList.add('hide');
-			modal.classList.remove('show');
-			document.body.style.overflow = '';
+			simplify();
+			// modal.classList.add('hide');
+			// modal.classList.remove('show');
+			// document.body.style.overflow = '';
 		});
 		modal.addEventListener ('click', (e) => {
 			if(e.target === modal) {
-				modal.classList.add('hide');
-				modal.classList.remove('show');
-				document.body.style.overflow = '';
+				simplify();
+				// modal.classList.add('hide');
+				// modal.classList.remove('show');
+				// document.body.style.overflow = '';
 			}
 		});
 		document.addEventListener ('keydown', (e) => {
 			if (e.code === 'Escape') {
-				modal.classList.add('hide');
-				modal.classList.remove('show');
-				document.body.style.overflow = '';
+				simplify();
+				// modal.classList.add('hide');
+				// modal.classList.remove('show');
+				// document.body.style.overflow = '';
 			}
 		});
+
+		function simplify() {
+			modal.classList.add('hide');
+			modal.classList.remove('show');
+			document.body.style.overflow = '';
+		}
 
 		//slides
 
